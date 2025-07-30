@@ -11,6 +11,19 @@ import microcontroller
 #Emulate Mouse
 import usb_hid
 
+# Clear memory that save data between reboots
+if microcontroller.nvm[0] == 1:
+    microcontroller.nvm[0] = 0
+# Unlock USB Mass Storage if We receive (0,0,0,0,0,1) aka Unlock USB MS
+# Check if we have something in memory saved between reboots
+else:
+    # If we dont have, Disable CIRTCUITPYTHON USB DRIVE
+    usb_cdc.disable()
+    storage.disable_usb_drive()
+    
+    # Disable MiDi
+    usb_midi.disable()
+
 # Example Mouse descriptor
 mouse_descriptor = bytes([
     0x05, 0x01, 0x09, 0x02,       # Usage Page (Generic Desktop), Usage (Mouse)
@@ -123,39 +136,31 @@ vendor2 = usb_hid.Device(
     out_report_lengths=(19,)
 )
 
-# Unlock USB Mass Storage if We receive (0,0,0,0,0,1) aka Unlock USB MS
-# Check if we have something in memory saved between reboots
 if microcontroller.nvm[0] != 1:
-    # If we dont have, Disable CIRTCUITPYTHON USB DRIVE
-    usb_cdc.disable()
-    storage.disable_usb_drive()
+    # Custom HID interfaces like mouse_interface etc.
+    usb_hid.enable((mouse_interface, consumer_interface, vendor1, vendor2))
+    # Custom USB Identifier Example
+    supervisor.set_usb_identification(
+        manufacturer="Raspberry Pi", 
+        product="Pico W", 
+        vid=0x239A, 
+        pid=0x8162 
+    )
+    # Example for Setting Interface Name
+    #usb_hid.set_interface_name("Raspberry Pico W HID Interface")
 
-# Disable MiDi
-usb_midi.disable()
+    # Other Example Options
+    # usb_hid.Device.KEYBOARD
+    # usb_hid.Device.CONSUMER_CONTROL
+    # usb_hid.Device.MOUSE
 
-# Custom USB Identifier Example
-supervisor.set_usb_identification(
-    manufacturer="Raspberry Pi", 
-    product="Pico W", 
-    vid=0x239A, 
-    pid=0x8162 
-)
-# Example for Setting Interface Name
-#usb_hid.set_interface_name("Raspberry Pico W HID Interface")
+    # Enable HID, you need extra (,) comma here python to see this as tuple
+    # Default HID Descriptors, not anything up there
+    #usb_hid.enable((usb_hid.Device.MOUSE,))
 
-# Other Example Options
-# usb_hid.Device.KEYBOARD
-# usb_hid.Device.CONSUMER_CONTROL
-# usb_hid.Device.MOUSE
-
-# Enable HID, you need extra (,) comma here python to see this as tuple
-# Default HID Descriptors, not anything up there
-#usb_hid.enable((usb_hid.Device.MOUSE,))
-
-# Other defined ones up there, mouse_interface,consumer_interface,vendor1,vendor2)
-# Enable Custom Definitions Defined above
-usb_hid.enable((mouse_interface,consumer_interface,vendor1,vendor2))
-
-# Clear memory that save data between reboots
-if microcontroller.nvm[0] == 1:
-    microcontroller.nvm[0] = 0
+    # Other defined ones up there, mouse_interface,consumer_interface,vendor1,vendor2)
+    # Enable Custom Definitions Defined above
+    usb_hid.enable((mouse_interface,consumer_interface,vendor1,vendor2))
+else:
+    # Optional: Disable all HID for storage mode
+    usb_hid.disable()  # or just skip .enable()
