@@ -95,7 +95,7 @@ vendor1 = usb_hid.Device(
 )
 
 
-# ---------- Vendor HID Interface 2 ----------
+# Example Vendor HID Interface 2
 vendor_descriptor2 = bytes([
   0x06,  0x00,  0xFF,  
   0x09,  0x01,  
@@ -113,7 +113,7 @@ vendor_descriptor2 = bytes([
   0x91,  0x03,  
   0xC0                # End Collection
 ])
-
+# Example Vendor HID Interface 2 Report Descriptor
 vendor2 = usb_hid.Device(
     report_descriptor=vendor_descriptor2,
     usage_page=0xFF,
@@ -134,26 +134,27 @@ if microcontroller.nvm[0] != 1:
 usb_midi.disable()
 
 # Custom USB Identifier Example
-#supervisor.set_usb_identification(
-#    manufacturer="Logitech",
-#    product="USB Receiver", # USB Receiver = Logitech, G300s Optical Gaming Mouse
-#    vid=0x046D,     # Custom VID 0x046D = Logitech Brand, HEX Value
-#    pid=0xC52F      # Custom PID  0xC52F = M330 Logitech, 0xC246 = G300s Optical Gaming Mouse
-#)
-
+supervisor.set_usb_identification(
+    manufacturer="Raspberry Pi", 
+    product="Pico 2 W", 
+    vid=0x239A, 
+    pid=0x8162 
+)
 # Example for Setting Interface Name
-#usb_hid.set_interface_name("Logitech HID Interface")
+#usb_hid.set_interface_name("Raspberry Pico 2 W HID Interface")
 
 # Other Example Options
-#usb_hid.Device.KEYBOARD
-#usb_hid.Device.CONSUMER_CONTROL
+# usb_hid.Device.KEYBOARD
+# usb_hid.Device.CONSUMER_CONTROL
+# usb_hid.Device.MOUSE
 
 # Enable HID, you need extra (,) comma here python to see this as tuple
 # Default HID Descriptors, not anything up there
-usb_hid.enable((usb_hid.Device.MOUSE,))
+#usb_hid.enable((usb_hid.Device.MOUSE,))
 
+# Other defined ones up there, mouse_interface,consumer_interface,vendor1,vendor2)
 # Enable Custom Definitions Defined above
-#usb_hid.enable((mouse_interface,consumer_interface,vendor1,vendor2))
+usb_hid.enable((mouse_interface,consumer_interface,vendor1,vendor2))
 
 # Clear memory that save data between reboots
 if microcontroller.nvm[0] == 1:
