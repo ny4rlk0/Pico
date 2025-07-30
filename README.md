@@ -5,9 +5,9 @@
 
 # Reset Flash 
 
-</h3>In case of you can't see usb drive. Follow this.</h3>
-</h3>This will recover you any kind of stuck. Just plug pi while pressing BOOTSEL and copy this.</h3>
-</h3>Reinstall Cirtcuit Python after.</h3>
+</h3>In case of you can't see usb drive. Follow this.</h3><br>
+</h3>This will recover you any kind of stuck. Just plug pi while pressing BOOTSEL and copy this.</h3><br>
+</h3>Reinstall Cirtcuit Python after.</h3><br>
 <h3><a href="https://datasheets.raspberrypi.com/soft/flash_nuke.uf2">Flash Nuke Download</a></h3>
 
 # How to install Cirtcuit Python
