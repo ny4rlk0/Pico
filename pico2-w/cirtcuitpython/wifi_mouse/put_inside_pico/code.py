@@ -11,7 +11,7 @@ import supervisor
 
 # Customize Variables
 key = "picoMouse"  # Must match client key!
-SSID = "WIFI_NAME"
+SSID = "WIFI_SSID"
 PW = "WIFI_PASSWORD"
 PORT= 443
 # Do not change variables
