@@ -1,6 +1,4 @@
 # boot.py
-import os
-
 #Emulate Mouse
 import usb_hid
 import usb_cdc
